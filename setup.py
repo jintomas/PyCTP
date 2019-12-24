@@ -8,6 +8,7 @@ Created on Sat Jul 30 14:39:27 2016
 import platform
 from distutils.core import setup, Extension
 from os.path import join, split, dirname
+import os
 
 headers = ['stdafx.h', 'UserApiDataType.h', 'UserApiStruct.h', 'MdApi.h', 'TraderApi.h', 'test_PyCTP.py']
 sources = ['stdafx.cpp', 'PyCTP.cpp', 'UserApiDataType.cpp', 'UserApiStruct.cpp', 'MdApi.cpp', 'TraderApi.cpp']
@@ -19,8 +20,13 @@ optional = {}
 if platform.system() == 'Linux':
     optional['extra_compile_args'] = ['-std=c++11']
     optional['runtime_library_dirs'] = ['./']
-    optional['include_dirs']=['./v6.3.6_20160606_api_tradeapi_linux64']
-    optional['library_dirs']=['./v6.3.6_20160606_api_tradeapi_linux64']
+    optional['include_dirs']=['./v6.3.15_20190220_api_clientdatacollectdll_linux64', './v6.3.15_20190220_api_tradeapi_se_linux64']
+    optional['library_dirs']=['./v6.3.15_20190220_api_clientdatacollectdll_linux64', './v6.3.15_20190220_api_tradeapi_se_linux64']
+    argments = dict(name='PyCTP',
+                sources=sources,
+                language='c++',
+                libraries=['thostmduserapi_se', 'thosttraderapi_se','LinuxDataCollect'],
+                depends=depends)
 #    depend_dynamics = ['libthostmduserapi.so', 'libthosttraderapi.so']
 if platform.system() == 'Windows':
     optional['include_dirs'] = ['./v6.3.6_20160606_tradeapi_windows']
@@ -29,11 +35,11 @@ if platform.system() == 'Windows':
         optional['include_dirs'] = ['./v6.3.15_20190220_tradeapi64_se_windows','v6.3.15_20190220_clientdll64_windows']
         optional['library_dirs'] = ['./v6.3.15_20190220_tradeapi64_se_windows','v6.3.15_20190220_clientdll64_windows']
 #    depend_dynamics = ['thostmduserapi.dll', 'thosttraderapi.dll']
-argments = dict(name='PyCTP',
-                sources=sources,
-                language='c++',
-                libraries=['thostmduserapi_se', 'thosttraderapi_se','WinDataCollect'],
-                depends=depends)
+    argments = dict(name='PyCTP',
+                    sources=sources,
+                    language='c++',
+                    libraries=['thostmduserapi_se', 'thosttraderapi_se','WinDataCollect'],
+                    depends=depends)
 argments.update(optional)
 
 setup(name='PyCTP',
